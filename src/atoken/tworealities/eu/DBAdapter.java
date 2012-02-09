@@ -1,4 +1,4 @@
-package atoken._2realities.com;
+package atoken.tworealities.eu;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

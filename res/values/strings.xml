@@ -3,5 +3,6 @@
 
     <string name="hello">Hello World, ATokenActivity!</string>
     <string name="app_name">AToken</string>
+    <string name="new_token">New token</string>
 
 </resources>

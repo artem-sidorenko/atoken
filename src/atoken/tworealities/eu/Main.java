@@ -1,6 +1,7 @@
 package atoken.tworealities.eu;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +26,13 @@ public class Main extends Activity {
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Toast.makeText(this, "Just a test", Toast.LENGTH_SHORT).show();
-		return true;
+    	switch(item.getItemId()) {
+    		case R.id.about:
+    			startActivity(new Intent(this,About.class));
+    			return true;
+    		default:
+    			Toast.makeText(this, "Just a test", Toast.LENGTH_SHORT).show();
+    			return true;
+    	}
 	}
 }

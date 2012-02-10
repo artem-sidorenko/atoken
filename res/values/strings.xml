@@ -6,5 +6,12 @@
     <string name="menu_new_token">New token</string>
     <string name="menu_about">About</string>
     <string name="menu_settings">Settings</string>
+    <string name="about_text">Use your android device as a token for HOTP etc. TBD</string>
+    <string name="about_licensed">Licensed under GPL2</string>
+    <string name="about_version">version: TBD</string>
+    <string name="about_authors">Authors: Artem Sidorenko</string>
+    <string name="about_homepage">http://www.2realities.com</string>
+    <string name="about_copyright">Copyright 2012 Artem Sidorenko</string>
+    <string name="about_title">About AToken</string>
 
 </resources>

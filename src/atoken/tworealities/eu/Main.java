@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import atoken.tworealities.eu.R;
 
-public class ATokenActivity extends Activity {
+public class Main extends Activity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -1,4 +1,4 @@
-package atoken.tworealities.eu;
+package atoken.tworealities.eu.classes;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,35 +10,40 @@ public class DBAdapter {
 	private static final String KEY_MAIN_ID = "_id";
 	private static final String KEY_MAIN_NAME = "name";
 	private static final String KEY_MAIN_SERIAL = "serial";
-	private static final String KEY_MAIN_TYPE = "type";
 	private static final String KEY_MAIN_SEED = "seed";
-	
-	/**some constants for table with event counters, id is the same as in the mail table*/
+
+	/**some constants for table with event counters, id is the same as in the main table*/
 	private static final String EVENT_TABLE = "event";
 	private static final String KEY_EVENT_ID = "_id";
 	private static final String KEY_EVENT_COUNTER = "counter";
-	
+
+	/**some constants for table with time token informations, id is the same as in the main table*/
+	private static final String TIME_TABLE = "time";
+	private static final String KEY_TIME_ID = "_id";
+	private static final String KEY_TIME_TYPE = "type";
+
 	/**other constants*/
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "atoken";
-	
+
 	/**SQL Queries*/
-    private static final String DATABASE_CREATE =
-            "CREATE TABLE "+MAIN_TABLE+" ("+KEY_MAIN_ID+" PRIMARY KEY AUTOINCREMENT, "+KEY_MAIN_NAME+" NOT NULL, "+KEY_MAIN_SERIAL+", "+KEY_MAIN_TYPE+", "+KEY_MAIN_SEED+" NOT NULL;"
-            + "CREATE TABLE "+EVENT_TABLE+" ("+KEY_EVENT_ID+" PRIMARY KEY, "+KEY_EVENT_COUNTER+";";
-	
+	private static final String DATABASE_CREATE =
+			"CREATE TABLE "+MAIN_TABLE+" ("+KEY_MAIN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+KEY_MAIN_NAME+" TEXT NOT NULL, "+KEY_MAIN_SERIAL+" TEXT, "+KEY_MAIN_SEED+" TEXT NOT NULL;"
+					+ "CREATE TABLE "+EVENT_TABLE+" ("+KEY_EVENT_ID+" INTEGER PRIMARY KEY, "+KEY_EVENT_COUNTER+" INTEGER);"
+					+ "CREATE TABLE "+TIME_TABLE+" ("+KEY_TIME_ID+" INTEGER PRIMARY KEY, "+KEY_TIME_TYPE+" INTEGER);";
+
 	/**some internals*/
 	private final Context mCtx;
 	private DBHelper mDBHelper;
 	private SQLiteDatabase mDB;
-	
+
 	/**private class for SQLite*/
 	private class DBHelper extends SQLiteOpenHelper{
 
 		public DBHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		}
-		
+
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			db.execSQL(DATABASE_CREATE);
@@ -47,16 +52,16 @@ public class DBAdapter {
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		}
-		
+
 	}
-	
+
 	public DBAdapter(Context ctx) {
 		this.mCtx = ctx;
 	}
-	
+
 	public void open(){
-        mDBHelper = new DBHelper(this.mCtx);
-        mDB = mDBHelper.getWritableDatabase();
+		mDBHelper = new DBHelper(this.mCtx);
+		mDB = mDBHelper.getWritableDatabase();
 	}
 
 	public void close() {

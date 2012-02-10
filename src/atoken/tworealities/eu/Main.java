@@ -1,15 +1,17 @@
 package atoken.tworealities.eu;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import atoken.tworealities.eu.R;
 
-public class Main extends Activity {
+public class Main extends ListActivity {
 	private static final int ACTIVITY_NEW_TOKEN=0;
 
 
@@ -40,6 +42,7 @@ public class Main extends Activity {
 			startActivityForResult(new Intent(this,New_token.class),ACTIVITY_NEW_TOKEN);
 			return true;
 		default:
+			fillTokens();
 			return true;
 		}
 	}
@@ -53,5 +56,13 @@ public class Main extends Activity {
 			if(resultCode==RESULT_OK)
 				Toast.makeText(this,getString(R.string.new_token_toast_created), Toast.LENGTH_SHORT).show();
 		}
+	}
+	
+	public void fillTokens(){
+		String[] values = { "a", "b", "bbb" };
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.testview, values);
+		if(adapter.getCount()!=0)
+			findViewById(R.id.no_tokens).setVisibility(View.GONE);
+		setListAdapter(adapter);
 	}
 }

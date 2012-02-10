@@ -2,5 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
     <item android:id="@+id/new_token" android:title="@string/menu_new_token" android:icon="@drawable/ic_menu_add"></item><item android:id="@+id/preferences" android:title="@string/menu_preferences" android:icon="@drawable/ic_menu_manage" android:enabled="false" android:visible="false"></item><item android:id="@+id/about" android:icon="@drawable/ic_menu_info_details" android:title="@string/menu_about"></item>
+    <item android:id="@+id/item1" android:title="fill"></item>
     
 </menu>

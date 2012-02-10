@@ -19,6 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".About" android:label="@string/about_title"/>
+        <activity android:name=".Preferences"></activity>
+        <activity android:name=".New_token" android:label="@string/new_token_title"></activity>
     </application>
 
 </manifest>

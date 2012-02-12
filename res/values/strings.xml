@@ -38,5 +38,8 @@
         <string name="main_dialog_text_delete_token">Delete this token?</string>
         <string name="main_dialog_button_delete">Delete</string>
         <string name="main_dialog_button_cancel">Cancel</string>
+        <string name="preferences_group_backup">Backup/Restore</string>
+        <string name="preferences_backup">Backup</string>
+        <string name="preferences_restore">Restore</string>
 
 </resources>

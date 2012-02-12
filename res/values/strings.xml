@@ -33,5 +33,10 @@
         <item >HOTP/T60 - 60 seconds interval</item>
     </string-array>
         <string name="main_list_serial">S/N:</string>
+        <string name="main_edit">Edit</string>
+        <string name="main_list_context_menu_delete">Delete</string>
+        <string name="main_dialog_text_delete_token">Delete this token?</string>
+        <string name="main_dialog_button_delete">Delete</string>
+        <string name="main_dialog_button_cancel">Cancel</string>
 
 </resources>

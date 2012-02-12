@@ -41,7 +41,8 @@ public class DBAdapter {
 	private static final String DATABASE_CREATE_TIME =
 			"CREATE TABLE "+TIME_TABLE+" ("+KEY_TIME_ID+" INTEGER PRIMARY KEY, "+KEY_TIME_TYPE+" INTEGER);";
 	private static final String QUERY_ALL_TOKENS =
-			"SELECT * FROM "+MAIN_TABLE+" LEFT JOIN "+EVENT_TABLE+" ON "+MAIN_TABLE+"."+KEY_MAIN_ID+"="+EVENT_TABLE+"."+KEY_EVENT_ID
+			"SELECT "+MAIN_TABLE+".*, "+EVENT_TABLE+"."+KEY_EVENT_COUNTER+", "+TIME_TABLE+"."+KEY_TIME_TYPE
+			+" FROM "+MAIN_TABLE+" LEFT JOIN "+EVENT_TABLE+" ON "+MAIN_TABLE+"."+KEY_MAIN_ID+"="+EVENT_TABLE+"."+KEY_EVENT_ID
 			+" LEFT JOIN "+TIME_TABLE+ " ON "+MAIN_TABLE+"."+KEY_MAIN_ID+"="+TIME_TABLE+"."+KEY_TIME_ID;
 
 	/**some internals*/
@@ -109,5 +110,17 @@ public class DBAdapter {
 
 	public Cursor getTokens(){
 		return mDB.rawQuery(QUERY_ALL_TOKENS, null);
+	}
+	
+	public void deleteToken(Token token){
+		mDB.delete(MAIN_TABLE, KEY_MAIN_ID+"="+token.getId(),null);
+		
+		if(token instanceof TimeToken){
+			mDB.delete(TIME_TABLE, KEY_TIME_ID+"="+token.getId(), null);
+		}
+		
+		else if(token instanceof EventToken){
+			mDB.delete(EVENT_TABLE, KEY_EVENT_ID+"="+token.getId(), null);
+		}
 	}
 }

@@ -3,17 +3,24 @@ package atoken.tworealities.eu;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -28,6 +35,7 @@ import atoken.tworealities.eu.classes.Token;
 
 public class Main extends ListActivity {
 	private static final int ACTIVITY_NEW_TOKEN=0;
+	private ArrayList<Token> token_list;
 
 
 	/** Called when the activity is first created. */
@@ -36,6 +44,7 @@ public class Main extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		fillTokens();
+		registerForContextMenu(getListView());
 	}
 
 	@Override
@@ -43,6 +52,13 @@ public class Main extends ListActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
 		return true;
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_list_context_menu, menu);
 	}
 
 	@Override
@@ -56,6 +72,34 @@ public class Main extends ListActivity {
 			return true;
 		case R.id.new_token:
 			startActivityForResult(new Intent(this,New_token.class),ACTIVITY_NEW_TOKEN);
+			return true;
+		default:
+			return true;
+		}
+	}
+	
+	@Override
+	public boolean onContextItemSelected(final MenuItem item) {
+		switch(item.getItemId()) {
+		case R.id.main_list_context_menu_edit:
+			return true;
+		case R.id.main_list_context_menu_delete:
+			Builder builder = new Builder(this);
+			builder.setMessage(getString(R.string.main_dialog_text_delete_token));
+			builder.setCancelable(true);
+			builder.setPositiveButton(getString(R.string.main_dialog_button_delete), new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					DBAdapter db = new DBAdapter(getApplicationContext());
+					db.open();
+					AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+					Token token = token_list.get((int) info.position);
+					db.deleteToken(token);
+					db.close();
+					fillTokens();
+				}
+			});
+			builder.setNegativeButton(getString(R.string.main_dialog_button_cancel), null);
+			builder.create().show();
 			return true;
 		default:
 			return true;
@@ -87,7 +131,7 @@ public class Main extends ListActivity {
 	}
 	
 	private class ListAdapter extends BaseAdapter{
-		private ArrayList<Token> token_list;
+		
 		
 		
 		public ListAdapter(Context context) {

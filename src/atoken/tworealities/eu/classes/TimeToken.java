@@ -1,5 +1,7 @@
 package atoken.tworealities.eu.classes;
 
+import android.database.Cursor;
+
 public class TimeToken extends Token {
 	private int type;
 
@@ -13,7 +15,6 @@ public class TimeToken extends Token {
 		return type;
 	}
 
-
 	public TimeToken(String name, String serial, String seed, int type) {
 		super(name, serial, seed);
 		// TODO Auto-generated constructor stub
@@ -22,6 +23,12 @@ public class TimeToken extends Token {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public TimeToken(Cursor c) {
+		super(c);
+		// TODO Auto-generated constructor stub
+		type = c.getInt(c.getColumnIndex(DBAdapter.KEY_TIME_TYPE));
 	}
 
 }

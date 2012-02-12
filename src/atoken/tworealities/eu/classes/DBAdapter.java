@@ -1,28 +1,33 @@
 package atoken.tworealities.eu.classes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.sax.StartElementListener;
 import android.util.Log;
 
 public class DBAdapter {
 	/**some constants for main table*/
-	private static final String MAIN_TABLE = "main";
-	private static final String KEY_MAIN_ID = "_id";
-	private static final String KEY_MAIN_NAME = "name";
-	private static final String KEY_MAIN_SERIAL = "serial";
-	private static final String KEY_MAIN_SEED = "seed";
+	public static final String MAIN_TABLE = "main";
+	public static final String KEY_MAIN_ID = "_id";
+	public static final String KEY_MAIN_NAME = "name";
+	public static final String KEY_MAIN_SERIAL = "serial";
+	public static final String KEY_MAIN_SEED = "seed";
 
 	/**some constants for table with event counters, id is the same as in the main table*/
-	private static final String EVENT_TABLE = "event";
-	private static final String KEY_EVENT_ID = "_id";
-	private static final String KEY_EVENT_COUNTER = "counter";
+	public static final String EVENT_TABLE = "event";
+	public static final String KEY_EVENT_ID = "_id";
+	public static final String KEY_EVENT_COUNTER = "counter";
 
 	/**some constants for table with time token informations, id is the same as in the main table*/
-	private static final String TIME_TABLE = "time";
-	private static final String KEY_TIME_ID = "_id";
-	private static final String KEY_TIME_TYPE = "type";
+	public static final String TIME_TABLE = "time";
+	public static final String KEY_TIME_ID = "_id";
+	public static final String KEY_TIME_TYPE = "type";
 
 	/**other constants*/
 	private static final int DATABASE_VERSION = 1;
@@ -35,6 +40,9 @@ public class DBAdapter {
 			"CREATE TABLE "+EVENT_TABLE+" ("+KEY_EVENT_ID+" INTEGER PRIMARY KEY, "+KEY_EVENT_COUNTER+" INTEGER);";
 	private static final String DATABASE_CREATE_TIME =
 			"CREATE TABLE "+TIME_TABLE+" ("+KEY_TIME_ID+" INTEGER PRIMARY KEY, "+KEY_TIME_TYPE+" INTEGER);";
+	private static final String QUERY_ALL_TOKENS =
+			"SELECT * FROM "+MAIN_TABLE+" LEFT JOIN "+EVENT_TABLE+" ON "+MAIN_TABLE+"."+KEY_MAIN_ID+"="+EVENT_TABLE+"."+KEY_EVENT_ID
+			+" LEFT JOIN "+TIME_TABLE+ " ON "+MAIN_TABLE+"."+KEY_MAIN_ID+"="+TIME_TABLE+"."+KEY_TIME_ID;
 
 	/**some internals*/
 	private final Context mCtx;
@@ -99,4 +107,7 @@ public class DBAdapter {
 		}
 	}
 
+	public Cursor getTokens(){
+		return mDB.rawQuery(QUERY_ALL_TOKENS, null);
+	}
 }

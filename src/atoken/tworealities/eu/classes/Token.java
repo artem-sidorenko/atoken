@@ -1,20 +1,26 @@
 package atoken.tworealities.eu.classes;
 
+import android.database.Cursor;
+
 abstract public class Token {
 	private int id;
 	private String name;
 	private String serial;
 	private String seed;
 	
-	public Token(){
-		super();
-	}
-	
 	public Token(String name, String serial, String seed) {
 		super();
 		this.name = name;
 		this.serial = serial;
 		this.seed = seed;
+	}
+	
+	public Token(Cursor c){
+		super();
+		id = c.getInt(c.getColumnIndex(DBAdapter.KEY_MAIN_ID));
+		name = c.getString(c.getColumnIndex(DBAdapter.KEY_MAIN_NAME));
+		serial = c.getString(c.getColumnIndex(DBAdapter.KEY_MAIN_SERIAL));
+		seed = c.getString(c.getColumnIndex(DBAdapter.KEY_MAIN_SEED));
 	}
 	
 	public String getName() {
@@ -37,5 +43,9 @@ abstract public class Token {
 		return seed;
 	}
 	
+	public int getId() {
+		return id;
+	}
+
 	abstract public int getOtp();
 }

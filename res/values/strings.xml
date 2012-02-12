@@ -8,7 +8,7 @@
     <string name="menu_preferences">Preferences</string>
     <string name="about_text">Use your android device as a token for HOTP etc. TBD</string>
     <string name="about_licensed">Licensed under GPL2</string>
-    <string name="about_version">version: TBD</string>
+    <string name="about_version">version:</string>
     <string name="about_authors">Authors: Artem Sidorenko</string>
     <string name="about_homepage">http://www.2realities.com</string>
     <string name="about_copyright">Copyright 2012 Artem Sidorenko</string>
@@ -32,5 +32,6 @@
         <item >HOTP/T30 - 30 seconds interval</item>
         <item >HOTP/T60 - 60 seconds interval</item>
     </string-array>
+        <string name="main_list_serial">S/N:</string>
 
 </resources>

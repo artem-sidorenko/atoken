@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import atoken.tworealities.eu.classes.DBAdapter;
 import atoken.tworealities.eu.classes.EventToken;
 import atoken.tworealities.eu.classes.TimeToken;
+import atoken.tworealities.eu.classes.Token;
 
 public class New_token extends Activity {
 
@@ -32,8 +33,17 @@ public class New_token extends Activity {
 
 		//listener for create button
 		findViewById(R.id.button_create).setOnClickListener(this.button_listener);
+		
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			int token_id = extras.getInt(DBAdapter.KEY_MAIN_ID);
+			DBAdapter db = new DBAdapter(this);
+			db.open();
+			Token token = db.getToken(token_id);
+			((EditText) findViewById(R.id.token_name)).setText(token.getName());
+			((EditText) findViewById(R.id.token_serial)).setText(token.getSerial());
+		}
 	}
-
 
 	private OnClickListener radio_listener = new OnClickListener() {
 

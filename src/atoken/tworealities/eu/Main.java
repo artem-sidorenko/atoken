@@ -29,6 +29,7 @@ import atoken.tworealities.eu.classes.Token;
 
 public class Main extends ListActivity {
 	private static final int ACTIVITY_NEW_TOKEN=0;
+	private static final int ACTIVITY_EDIT_TOKEN=1;
 	private ArrayList<Token> token_list;
 
 
@@ -74,8 +75,14 @@ public class Main extends ListActivity {
 	
 	@Override
 	public boolean onContextItemSelected(final MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		final Token token = token_list.get((int) info.position);
+		
 		switch(item.getItemId()) {
 		case R.id.main_list_context_menu_edit:
+			Intent i = new Intent(this,New_token.class);
+			i.putExtra(DBAdapter.KEY_MAIN_ID,token.getId());
+			startActivityForResult(i, ACTIVITY_EDIT_TOKEN);
 			return true;
 		case R.id.main_list_context_menu_delete:
 			Builder builder = new Builder(this);
@@ -85,8 +92,6 @@ public class Main extends ListActivity {
 				public void onClick(DialogInterface dialog, int which) {
 					DBAdapter db = new DBAdapter(getApplicationContext());
 					db.open();
-					AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-					Token token = token_list.get((int) info.position);
 					db.deleteToken(token);
 					db.close();
 					fillTokens();

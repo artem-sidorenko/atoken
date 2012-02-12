@@ -44,6 +44,11 @@ public class DBAdapter {
 			"SELECT "+MAIN_TABLE+".*, "+EVENT_TABLE+"."+KEY_EVENT_COUNTER+", "+TIME_TABLE+"."+KEY_TIME_TYPE
 			+" FROM "+MAIN_TABLE+" LEFT JOIN "+EVENT_TABLE+" ON "+MAIN_TABLE+"."+KEY_MAIN_ID+"="+EVENT_TABLE+"."+KEY_EVENT_ID
 			+" LEFT JOIN "+TIME_TABLE+ " ON "+MAIN_TABLE+"."+KEY_MAIN_ID+"="+TIME_TABLE+"."+KEY_TIME_ID;
+	private static final String QUERY_TOKEN=
+			"SELECT "+MAIN_TABLE+".*, "+EVENT_TABLE+"."+KEY_EVENT_COUNTER+", "+TIME_TABLE+"."+KEY_TIME_TYPE
+			+" FROM "+MAIN_TABLE+" LEFT JOIN "+EVENT_TABLE+" ON "+MAIN_TABLE+"."+KEY_MAIN_ID+"="+EVENT_TABLE+"."+KEY_EVENT_ID
+			+" LEFT JOIN "+TIME_TABLE+ " ON "+MAIN_TABLE+"."+KEY_MAIN_ID+"="+TIME_TABLE+"."+KEY_TIME_ID
+			+" WHERE "+MAIN_TABLE+"."+KEY_MAIN_ID+"==?";
 
 	/**some internals*/
 	private final Context mCtx;
@@ -110,6 +115,18 @@ public class DBAdapter {
 
 	public Cursor getTokens(){
 		return mDB.rawQuery(QUERY_ALL_TOKENS, null);
+	}
+	
+	public Token getToken(int id){
+		Token token;
+		String [] params = {Integer.toString(id)};
+		Cursor c = mDB.rawQuery(QUERY_TOKEN, params);
+		c.moveToFirst();
+		if(c.isNull(c.getColumnIndex(KEY_TIME_TYPE)))
+			token = new EventToken(c);
+		else
+			token = new TimeToken(c);
+		return token;
 	}
 	
 	public void deleteToken(Token token){

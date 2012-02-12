@@ -3,9 +3,14 @@ package atoken.tworealities.eu;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.view.View;
 import android.view.View.OnClickListener;
+import atoken.tworealities.eu.classes.DBAdapter;
+import atoken.tworealities.eu.classes.EventToken;
+import atoken.tworealities.eu.classes.TimeToken;
 
 public class New_token extends Activity {
 
@@ -48,6 +53,21 @@ public class New_token extends Activity {
 	private OnClickListener button_listener = new OnClickListener() {
 
 		public void onClick(View v) {
+			String name = ((EditText) findViewById(R.id.token_name)).getText().toString();
+			String serial = ((EditText) findViewById(R.id.token_serial)).getText().toString();
+			String seed = ((EditText) findViewById(R.id.token_seed)).getText().toString();
+			DBAdapter db = new DBAdapter(v.getContext());
+			db.open();
+			
+			if(((RadioButton) findViewById(R.id.event_token)).isChecked()){
+				EventToken token = new EventToken(name,serial,seed);
+				db.createToken(token);
+			}else{
+				TimeToken token = new TimeToken(name, serial, seed, 0);
+				db.createToken(token);
+			}
+
+			db.close();
 			setResult(RESULT_OK);
 			finish();
 		}

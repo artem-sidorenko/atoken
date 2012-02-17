@@ -119,12 +119,12 @@ public class Main extends ListActivity {
 	}
 	
 	public void fillTokens(){
-		/*String[] values = { "a", "b", "bbb" };
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.testview, values);*/
 		ListAdapter list_adapter = new ListAdapter(this);
 		
 		if(list_adapter.getCount()!=0)
 			findViewById(R.id.no_tokens).setVisibility(View.GONE);
+		else
+			findViewById(R.id.no_tokens).setVisibility(View.VISIBLE);
 		
 		setListAdapter(list_adapter);
 	}

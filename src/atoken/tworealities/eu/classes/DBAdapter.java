@@ -112,6 +112,31 @@ public class DBAdapter {
 			mDB.insert(EVENT_TABLE, null, event_values);
 		}
 	}
+	
+	public void updateToken(Token token){
+		int token_id = token.getId();
+		ContentValues main_values = new ContentValues();
+		main_values.put(KEY_MAIN_NAME, token.getName());
+		main_values.put(KEY_MAIN_SERIAL, token.getSerial());
+		main_values.put(KEY_MAIN_SEED, token.getSeed());
+		mDB.update(MAIN_TABLE, main_values, KEY_MAIN_ID+"="+token_id, null);
+
+		
+		if(token instanceof TimeToken){
+			TimeToken time_token = (TimeToken) token;
+			ContentValues time_values = new ContentValues();
+			time_values.put(KEY_TIME_ID,token_id);
+			time_values.put(KEY_TIME_TYPE,time_token.getType());
+			mDB.update(TIME_TABLE, time_values, KEY_TIME_ID+"="+token_id, null);
+		}
+		
+		else if(token instanceof EventToken){
+			ContentValues event_values = new ContentValues();
+			event_values.put(KEY_EVENT_ID,token_id);
+			event_values.put(KEY_EVENT_COUNTER,0);
+			mDB.update(EVENT_TABLE, event_values, KEY_EVENT_ID+"="+token_id, null);
+		}
+	}
 
 	public Cursor getTokens(){
 		return mDB.rawQuery(QUERY_ALL_TOKENS, null);

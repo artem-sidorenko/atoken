@@ -115,6 +115,11 @@ public class Main extends ListActivity {
 				Toast.makeText(this,getString(R.string.new_token_toast_created), Toast.LENGTH_SHORT).show();
 				fillTokens();
 			}
+		case ACTIVITY_EDIT_TOKEN:
+			if(resultCode==RESULT_OK){
+				Toast.makeText(this,getString(R.string.new_token_toast_created), Toast.LENGTH_SHORT).show();
+				fillTokens();
+			}
 		}
 	}
 	

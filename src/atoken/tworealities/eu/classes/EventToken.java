@@ -3,12 +3,16 @@ package atoken.tworealities.eu.classes;
 import android.database.Cursor;
 
 public class EventToken extends Token {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6380321267677699791L;
+	private int counter;
+	
 	public EventToken(String name, String serial, String seed) {
 		super(name, serial, seed);
 		// TODO Auto-generated constructor stub
 	}
-
-	private int counter;
 	
 	public int getCounter() {
 		return counter;
@@ -19,9 +23,9 @@ public class EventToken extends Token {
 	}
 
 	@Override
-	public int getOtp() {
-		// TODO Auto-generated method stub
-		return 0;
+	public String getOtp() {
+		
+		return "0000000";
 	}
 
 	public EventToken(Cursor c) {

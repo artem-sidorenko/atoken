@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -29,10 +30,23 @@ import atoken.tworealities.eu.classes.TimeToken;
 import atoken.tworealities.eu.classes.Token;
 
 public class Main extends ListActivity {
+	private static final String TAG = Main.class.getSimpleName();
 	private static final int ACTIVITY_NEW_TOKEN=0;
 	private static final int ACTIVITY_EDIT_TOKEN=1;
 	private ArrayList<Token> token_list;
 	private DBAdapter db;
+	private Handler handler_new_tokens = new Handler();
+	private boolean handler_keep_running;
+	private Runnable run_new_tokens = new Runnable() {
+		
+		public void run() {
+			if(handler_keep_running){
+				Log.d(TAG, "Running thread");
+				fillTokens();
+				handler_new_tokens.postDelayed(run_new_tokens, 1000);
+			}
+		}
+	};
 
 
 	/** Called when the activity is first created. */
@@ -54,7 +68,20 @@ public class Main extends ListActivity {
 		db.close();
 	}
 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		handler_keep_running = true;
+		run_new_tokens.run();
+	}
 
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		handler_keep_running = false;
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu){
@@ -197,6 +224,7 @@ public class Main extends ListActivity {
 			
 			TextView name = (TextView) token_item.findViewById(R.id.token_item_name);
 			TextView serial = (TextView) token_item.findViewById(R.id.token_item_serial);
+			TextView otp = (TextView) token_item.findViewById(R.id.token_item_otp);
 			ProgressBar time = (ProgressBar) token_item.findViewById(R.id.token_item_time_bar);
 			
 			Token token = (Token) getItem(position);
@@ -209,6 +237,8 @@ public class Main extends ListActivity {
 				token_item.findViewById(R.id.token_item_time_panel).setVisibility(View.GONE);
 				token_item.findViewById(R.id.token_item_event_pic).setVisibility(View.VISIBLE);
 			}
+			
+			otp.setText(token.getOtp());
 			
 			return token_item;
 		}

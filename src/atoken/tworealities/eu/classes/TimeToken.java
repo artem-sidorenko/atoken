@@ -3,12 +3,16 @@ package atoken.tworealities.eu.classes;
 import android.database.Cursor;
 
 public class TimeToken extends Token {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2731298503101800964L;
 	private int type;
 
 	@Override
-	public int getOtp() {
+	public String getOtp() {
 		// TODO Auto-generated method stub
-		return 0;
+		return "000000";
 	}
 
 	public int getType() {

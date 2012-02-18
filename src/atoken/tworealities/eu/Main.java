@@ -104,7 +104,6 @@ public class Main extends ListActivity {
 			builder.setCancelable(true);
 			builder.setPositiveButton(getString(R.string.main_dialog_button_delete), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					DBAdapter db = new DBAdapter(getApplicationContext());
 					db.deleteToken(token);
 					fillTokens();
 				}

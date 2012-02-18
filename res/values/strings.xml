@@ -20,11 +20,11 @@
     <string name="new_token_text_name">Name</string>
     <string name="new_token_text_serial">Serial</string>
     <string name="new_token_text_seed">Seed</string>
-    <string name="new_token_button_create">Create</string>
+    <string name="new_token_button_edit">Edit</string><string name="new_token_button_create">Create</string>
     <string name="new_token_radio_event">Event based</string>
     <string name="new_token_radio_time">Time based</string>
-    <string name="new_token_title">New token</string>
-    <string name="new_token_toast_created">New token was created</string>
+    <string name="new_token_title">New token</string><string name="new_token_edit_title">Edit token</string>
+    <string name="new_token_toast_created">New token was created</string><string name="new_token_toast_updated">The token was updated</string>
     <string name="new_token_text_token_type">Token type</string>
     <string-array name="new_token_text_token_types">
         <item >HOTP/T30 - 30 seconds interval</item>

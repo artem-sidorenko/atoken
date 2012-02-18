@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class Main extends ListActivity {
 	private static final int ACTIVITY_NEW_TOKEN=0;
 	private static final int ACTIVITY_EDIT_TOKEN=1;
 	private ArrayList<Token> token_list;
+	private DBAdapter db;
 
 
 	/** Called when the activity is first created. */
@@ -40,7 +42,19 @@ public class Main extends ListActivity {
 		setContentView(R.layout.main);
 		fillTokens();
 		registerForContextMenu(getListView());
+		db = new DBAdapter(this);
 	}
+	
+	
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		db.close();
+	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu){
@@ -81,7 +95,7 @@ public class Main extends ListActivity {
 		switch(item.getItemId()) {
 		case R.id.main_list_context_menu_edit:
 			Intent i = new Intent(this,New_token.class);
-			i.putExtra(DBAdapter.KEY_MAIN_ID,token.getId());
+			i.putExtra("token", token);
 			startActivityForResult(i, ACTIVITY_EDIT_TOKEN);
 			return true;
 		case R.id.main_list_context_menu_delete:
@@ -92,7 +106,6 @@ public class Main extends ListActivity {
 				public void onClick(DialogInterface dialog, int which) {
 					DBAdapter db = new DBAdapter(getApplicationContext());
 					db.deleteToken(token);
-					db.close();
 					fillTokens();
 				}
 			});
@@ -111,14 +124,21 @@ public class Main extends ListActivity {
 		switch(requestCode){
 		case ACTIVITY_NEW_TOKEN:
 			if(resultCode==RESULT_OK){
+				Token token = (Token) data.getSerializableExtra("token");
+				db.createToken(token);
 				Toast.makeText(this,getString(R.string.new_token_toast_created), Toast.LENGTH_SHORT).show();
 				fillTokens();
 			}
+			break;
 		case ACTIVITY_EDIT_TOKEN:
 			if(resultCode==RESULT_OK){
-				Toast.makeText(this,getString(R.string.new_token_toast_created), Toast.LENGTH_SHORT).show();
+				// TODO also change of types!
+				Token token = (Token) data.getSerializableExtra("token");
+				db.updateToken(token);
+				Toast.makeText(this,getString(R.string.new_token_toast_updated), Toast.LENGTH_SHORT).show();
 				fillTokens();
 			}
+			break;
 		}
 	}
 	

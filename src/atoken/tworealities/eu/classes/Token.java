@@ -1,8 +1,10 @@
 package atoken.tworealities.eu.classes;
 
+import java.io.Serializable;
+
 import android.database.Cursor;
 
-abstract public class Token {
+abstract public class Token implements Serializable {
 	private int id;
 	private String name;
 	private String serial;

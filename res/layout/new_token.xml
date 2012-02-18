@@ -31,7 +31,7 @@
         android:layout_height="wrap_content" />
 
     <RadioGroup
-        android:id="@+id/RadioGroup"
+        android:id="@+id/token_type_radiogroup"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -72,17 +72,25 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/new_token_text_seed" />
-
-    <EditText
-        android:id="@+id/token_seed"
+    <LinearLayout
+        android:id="@+id/token_layout_seed"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:lines="2" />
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_token_text_seed" />
+
+        <EditText
+            android:id="@+id/token_seed"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:lines="2" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/button_create"

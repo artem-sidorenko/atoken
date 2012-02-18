@@ -76,6 +76,7 @@ public class DBAdapter extends SQLiteOpenHelper{
 	}
 	
 	public void updateToken(Token token){
+		Log.d("DB:","updating");
 		SQLiteDatabase db = getWritableDatabase();
 		int token_id = token.getId();
 		ContentValues main_values = new ContentValues();

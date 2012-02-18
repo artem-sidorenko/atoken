@@ -1,19 +1,21 @@
 package atoken.tworealities.eu;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.view.View;
 import android.view.View.OnClickListener;
-import atoken.tworealities.eu.classes.DBAdapter;
 import atoken.tworealities.eu.classes.EventToken;
 import atoken.tworealities.eu.classes.TimeToken;
 import atoken.tworealities.eu.classes.Token;
 
 public class New_token extends Activity {
+	private Token token;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,6 @@ public class New_token extends Activity {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		((Spinner) findViewById(R.id.token_type)).setAdapter(adapter);
 
-
 		//listener for radio buttons
 		findViewById(R.id.event_token).setOnClickListener(this.radio_listener);
 		findViewById(R.id.time_token).setOnClickListener(this.radio_listener);
@@ -35,13 +36,16 @@ public class New_token extends Activity {
 		findViewById(R.id.button_create).setOnClickListener(this.button_listener);
 		
 		Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-			int token_id = extras.getInt(DBAdapter.KEY_MAIN_ID);
-			DBAdapter db = new DBAdapter(this);
-			Token token = db.getToken(token_id);
+		if (extras != null) { // Edit mode
+			token = (Token) extras.getSerializable("token");
 			((EditText) findViewById(R.id.token_name)).setText(token.getName());
 			((EditText) findViewById(R.id.token_serial)).setText(token.getSerial());
+			findViewById(R.id.token_type_radiogroup).setVisibility(View.GONE);
+			findViewById(R.id.token_layout_seed).setVisibility(View.GONE);
+			((Button) findViewById(R.id.button_create)).setText(getString(R.string.new_token_button_edit));
+			setTitle(getString(R.string.new_token_edit_title));
 		}
+		
 	}
 
 	private OnClickListener radio_listener = new OnClickListener() {
@@ -65,18 +69,33 @@ public class New_token extends Activity {
 			String name = ((EditText) findViewById(R.id.token_name)).getText().toString();
 			String serial = ((EditText) findViewById(R.id.token_serial)).getText().toString();
 			String seed = ((EditText) findViewById(R.id.token_seed)).getText().toString();
-			DBAdapter db = new DBAdapter(v.getContext());
 			
-			if(((RadioButton) findViewById(R.id.event_token)).isChecked()){
-				EventToken token = new EventToken(name,serial,seed);
-				db.createToken(token);
-			}else{
-				TimeToken token = new TimeToken(name, serial, seed, 0);
-				db.createToken(token);
+			if (token==null){//new token
+				if(((RadioButton) findViewById(R.id.event_token)).isChecked()){
+					token = new EventToken(name,serial,seed);
+				}else{
+					token = new TimeToken(name,serial,seed,0);
+				}
+			}else
+			{
+				token.setName(name);
+				token.setSerial(serial);
+				token.setSeed(seed);				
 			}
+			
 
-			db.close();
-			setResult(RESULT_OK);
+			
+			/*** Probably an idea for change token types **/
+			/*if(((RadioButton) findViewById(R.id.event_token)).isChecked()){
+				token = new EventToken(name,serial,seed);
+			}else{
+				token = new TimeToken(name,serial,seed,0);
+			}*/
+
+			Intent i = new Intent();
+			i.putExtra("token", token);
+			
+			setResult(RESULT_OK,i);
 			finish();
 		}
 

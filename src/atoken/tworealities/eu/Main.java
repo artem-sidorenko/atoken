@@ -91,7 +91,6 @@ public class Main extends ListActivity {
 			builder.setPositiveButton(getString(R.string.main_dialog_button_delete), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					DBAdapter db = new DBAdapter(getApplicationContext());
-					db.open();
 					db.deleteToken(token);
 					db.close();
 					fillTokens();
@@ -142,7 +141,6 @@ public class Main extends ListActivity {
 			super();
 			token_list = new ArrayList<Token>();
 			DBAdapter db = new DBAdapter(context);
-			db.open();
 			Cursor c = db.getTokens();
 			startManagingCursor(c);
 			

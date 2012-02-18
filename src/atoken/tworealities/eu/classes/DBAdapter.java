@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.sax.StartElementListener;
 import android.util.Log;
 
-public class DBAdapter {
+public class DBAdapter extends SQLiteOpenHelper{
 	/**some constants for main table*/
 	public static final String MAIN_TABLE = "main";
 	public static final String KEY_MAIN_ID = "_id";
@@ -50,51 +50,17 @@ public class DBAdapter {
 			+" LEFT JOIN "+TIME_TABLE+ " ON "+MAIN_TABLE+"."+KEY_MAIN_ID+"="+TIME_TABLE+"."+KEY_TIME_ID
 			+" WHERE "+MAIN_TABLE+"."+KEY_MAIN_ID+"==?";
 
-	/**some internals*/
-	private final Context mCtx;
-	private DBHelper mDBHelper;
-	private SQLiteDatabase mDB;
-
-	/**private class for SQLite*/
-	private class DBHelper extends SQLiteOpenHelper{
-
-		public DBHelper(Context context) {
-			super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		}
-
-		@Override
-		public void onCreate(SQLiteDatabase db) {
-			Log.i("AToken", "Creating DB");
-			db.execSQL(DATABASE_CREATE_MAIN);
-			db.execSQL(DATABASE_CREATE_EVENT);
-			db.execSQL(DATABASE_CREATE_TIME);
-		}
-
-		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		}
-
-	}
-
 	public DBAdapter(Context ctx) {
-		this.mCtx = ctx;
-	}
-
-	public void open(){
-		mDBHelper = new DBHelper(this.mCtx);
-		mDB = mDBHelper.getWritableDatabase();
-	}
-
-	public void close() {
-		mDBHelper.close();
+		super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
 	public void createToken(Token token){
+		SQLiteDatabase db = getWritableDatabase();
 		ContentValues main_values = new ContentValues();
 		main_values.put(KEY_MAIN_NAME, token.getName());
 		main_values.put(KEY_MAIN_SERIAL, token.getSerial());
 		main_values.put(KEY_MAIN_SEED, token.getSeed());
-		long token_id = mDB.insert(MAIN_TABLE, null, main_values);
+		long token_id = db.insert(MAIN_TABLE, null, main_values);
 
 		
 		if(token instanceof TimeToken){
@@ -102,24 +68,25 @@ public class DBAdapter {
 			ContentValues time_values = new ContentValues();
 			time_values.put(KEY_TIME_ID,token_id);
 			time_values.put(KEY_TIME_TYPE,time_token.getType());
-			mDB.insert(TIME_TABLE, null, time_values);
+			db.insert(TIME_TABLE, null, time_values);
 		}
 		
 		else if(token instanceof EventToken){
 			ContentValues event_values = new ContentValues();
 			event_values.put(KEY_EVENT_ID,token_id);
 			event_values.put(KEY_EVENT_COUNTER,0);
-			mDB.insert(EVENT_TABLE, null, event_values);
+			db.insert(EVENT_TABLE, null, event_values);
 		}
 	}
 	
 	public void updateToken(Token token){
+		SQLiteDatabase db = getWritableDatabase();
 		int token_id = token.getId();
 		ContentValues main_values = new ContentValues();
 		main_values.put(KEY_MAIN_NAME, token.getName());
 		main_values.put(KEY_MAIN_SERIAL, token.getSerial());
 		main_values.put(KEY_MAIN_SEED, token.getSeed());
-		mDB.update(MAIN_TABLE, main_values, KEY_MAIN_ID+"="+token_id, null);
+		db.update(MAIN_TABLE, main_values, KEY_MAIN_ID+"="+token_id, null);
 
 		
 		if(token instanceof TimeToken){
@@ -127,25 +94,25 @@ public class DBAdapter {
 			ContentValues time_values = new ContentValues();
 			time_values.put(KEY_TIME_ID,token_id);
 			time_values.put(KEY_TIME_TYPE,time_token.getType());
-			mDB.update(TIME_TABLE, time_values, KEY_TIME_ID+"="+token_id, null);
+			db.update(TIME_TABLE, time_values, KEY_TIME_ID+"="+token_id, null);
 		}
 		
 		else if(token instanceof EventToken){
 			ContentValues event_values = new ContentValues();
 			event_values.put(KEY_EVENT_ID,token_id);
 			event_values.put(KEY_EVENT_COUNTER,0);
-			mDB.update(EVENT_TABLE, event_values, KEY_EVENT_ID+"="+token_id, null);
+			db.update(EVENT_TABLE, event_values, KEY_EVENT_ID+"="+token_id, null);
 		}
 	}
 
 	public Cursor getTokens(){
-		return mDB.rawQuery(QUERY_ALL_TOKENS, null);
+		return getReadableDatabase().rawQuery(QUERY_ALL_TOKENS, null);
 	}
 	
 	public Token getToken(int id){
 		Token token;
 		String [] params = {Integer.toString(id)};
-		Cursor c = mDB.rawQuery(QUERY_TOKEN, params);
+		Cursor c = getReadableDatabase().rawQuery(QUERY_TOKEN, params);
 		c.moveToFirst();
 		if(c.isNull(c.getColumnIndex(KEY_TIME_TYPE)))
 			token = new EventToken(c);
@@ -155,14 +122,27 @@ public class DBAdapter {
 	}
 	
 	public void deleteToken(Token token){
-		mDB.delete(MAIN_TABLE, KEY_MAIN_ID+"="+token.getId(),null);
+		SQLiteDatabase db = getWritableDatabase();
+		db.delete(MAIN_TABLE, KEY_MAIN_ID+"="+token.getId(),null);
 		
 		if(token instanceof TimeToken){
-			mDB.delete(TIME_TABLE, KEY_TIME_ID+"="+token.getId(), null);
+			db.delete(TIME_TABLE, KEY_TIME_ID+"="+token.getId(), null);
 		}
 		
 		else if(token instanceof EventToken){
-			mDB.delete(EVENT_TABLE, KEY_EVENT_ID+"="+token.getId(), null);
+			db.delete(EVENT_TABLE, KEY_EVENT_ID+"="+token.getId(), null);
 		}
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		Log.i("AToken", "Creating DB");
+		db.execSQL(DATABASE_CREATE_MAIN);
+		db.execSQL(DATABASE_CREATE_EVENT);
+		db.execSQL(DATABASE_CREATE_TIME);		
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 	}
 }

@@ -38,7 +38,6 @@ public class New_token extends Activity {
 		if (extras != null) {
 			int token_id = extras.getInt(DBAdapter.KEY_MAIN_ID);
 			DBAdapter db = new DBAdapter(this);
-			db.open();
 			Token token = db.getToken(token_id);
 			((EditText) findViewById(R.id.token_name)).setText(token.getName());
 			((EditText) findViewById(R.id.token_serial)).setText(token.getSerial());
@@ -67,7 +66,6 @@ public class New_token extends Activity {
 			String serial = ((EditText) findViewById(R.id.token_serial)).getText().toString();
 			String seed = ((EditText) findViewById(R.id.token_seed)).getText().toString();
 			DBAdapter db = new DBAdapter(v.getContext());
-			db.open();
 			
 			if(((RadioButton) findViewById(R.id.event_token)).isChecked()){
 				EventToken token = new EventToken(name,serial,seed);

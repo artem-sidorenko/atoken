@@ -4,8 +4,8 @@
     <string name="menu_new_token">New token</string>
     <string name="menu_about">About</string>
     <string name="menu_preferences">Preferences</string>
-    <string name="about_text">Use your android device as a token for HOTP etc. TBD</string>
-    <string name="about_licensed">Licensed under GPL2</string>
+    <string name="about_text">Android token for one time passwords (RFC 6238 and 4226)</string>
+    <string name="about_licensed">Licensed under GPL-2</string>
     <string name="about_version">version:</string>
     <string name="about_authors">Authors: Artem Sidorenko</string>
     <string name="about_homepage">http://www.2realities.com</string>

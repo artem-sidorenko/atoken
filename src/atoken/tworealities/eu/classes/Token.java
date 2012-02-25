@@ -3,6 +3,9 @@ package atoken.tworealities.eu.classes;
 import java.io.Serializable;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -61,10 +64,9 @@ abstract public class Token implements Serializable {
 	
 	private byte[] hmacSha1(byte[] key, byte[] counter){
 		try {
-			Mac hmacSha1;
-			hmacSha1 = Mac.getInstance("HmacSHA1");
-			hmacSha1.init(new SecretKeySpec(key, "RAW"));
-			return hmacSha1.doFinal(counter);
+			Mac mac = Mac.getInstance("HmacSHA1");
+			mac.init(new SecretKeySpec(key, "HmacSHA1"));
+			return mac.doFinal(counter);
 		} catch (GeneralSecurityException e){
 			throw new UndeclaredThrowableException(e);
 		}

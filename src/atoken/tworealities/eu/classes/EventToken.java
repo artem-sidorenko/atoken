@@ -24,7 +24,6 @@ public class EventToken extends Token {
 
 	@Override
 	public String getOtp() {
-		
 		return "0000000";
 	}
 

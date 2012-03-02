@@ -39,5 +39,9 @@
         <string name="preferences_group_backup">Backup/Restore</string>
         <string name="preferences_backup">Backup</string>
         <string name="preferences_restore">Restore</string>
+        <string name="new_token_toast_empty_name">Name is required</string>
+        <string name="new_token_toast_short_seed">Seed is too short</string>
+        <string name="new_token_toast_long_seed">Seed is too long</string>
+        <string name="new_token_toast_seed_not_hex">Seed should be hexadecimal</string>
 
 </resources>

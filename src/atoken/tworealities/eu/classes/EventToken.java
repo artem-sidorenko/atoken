@@ -1,6 +1,7 @@
 package atoken.tworealities.eu.classes;
 
 import android.database.Cursor;
+import android.widget.SeekBar;
 
 public class EventToken extends Token {
 	/**
@@ -8,6 +9,10 @@ public class EventToken extends Token {
 	 */
 	private static final long serialVersionUID = -6380321267677699791L;
 	private int counter;
+	
+	private static final int[] DIGITS_POWER
+    // 0 1  2   3    4     5      6       7        8
+    = {1,10,100,1000,10000,100000,1000000,10000000,100000000};
 	
 	public EventToken(String name, String serial, String seed) {
 		super(name, serial, seed);
@@ -24,7 +29,32 @@ public class EventToken extends Token {
 
 	@Override
 	public String getOtp() {
-		return "0000000";
+		/*byte[] bcounter = new byte[8];
+		
+		for (int i = bcounter.length - 1; i >= 0; i--) {
+			bcounter[i] = (byte) (counter & 0xff);
+			counter >>= 8;
+		}
+		
+		byte[] hash = hmacSha1(hexStr2Bytes(seed), bcounter);
+		int offset = hash[hash.length - 1] & 0xf;
+		
+		int otpBinary = ((hash[offset] & 0x7f) << 24)
+						|((hash[offset + 1] & 0xff) << 16)
+						|((hash[offset + 2] & 0xff) << 8)
+						|(hash[offset + 3] & 0xff);
+		
+		int otp = otpBinary % DIGITS_POWER[6];
+		String result = Integer.toString(otp);
+		
+		
+		while(result.length() < 6){
+			result = "0" + result;
+		}
+		
+		
+		return result;*/
+		return "000000";
 	}
 
 	public EventToken(Cursor c) {

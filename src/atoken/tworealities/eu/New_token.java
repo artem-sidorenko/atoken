@@ -1,5 +1,6 @@
 package atoken.tworealities.eu;
 
+import android.R.bool;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.view.View;
 import android.view.View.OnClickListener;
 import atoken.tworealities.eu.classes.EventToken;
 import atoken.tworealities.eu.classes.TimeToken;
 import atoken.tworealities.eu.classes.Token;
+import atoken.tworealities.eu.classes.Utils;
 
 public class New_token extends Activity {
 	private Token token;
@@ -70,7 +73,28 @@ public class New_token extends Activity {
 			String serial = ((EditText) findViewById(R.id.token_serial)).getText().toString();
 			String seed = ((EditText) findViewById(R.id.token_seed)).getText().toString();
 			
+			//checks
+			if(name.length()==0){
+				Toast.makeText(v.getContext(),getString(R.string.new_token_toast_empty_name), Toast.LENGTH_SHORT).show();
+				return;
+			}
+				
+
 			if (token==null){//new token
+				//checks
+				if(seed.length()<32){
+					Toast.makeText(v.getContext(),getString(R.string.new_token_toast_short_seed), Toast.LENGTH_SHORT).show();
+					return;
+				}
+				if(seed.length()>32){
+					Toast.makeText(v.getContext(),getString(R.string.new_token_toast_long_seed), Toast.LENGTH_SHORT).show();
+					return;
+				}
+				if(!Utils.isHex(seed)){
+					Toast.makeText(v.getContext(),getString(R.string.new_token_toast_seed_not_hex), Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
 				if(((RadioButton) findViewById(R.id.event_token)).isChecked()){
 					token = new EventToken(name,serial,seed);
 				}else{

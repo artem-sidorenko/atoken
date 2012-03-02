@@ -2,6 +2,7 @@ package atoken.tworealities.eu.classes;
 
 import java.io.Serializable;
 import java.lang.reflect.UndeclaredThrowableException;
+import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,10 +17,10 @@ abstract public class Token implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -8625397089956144788L;
-	private int id;
-	private String name;
-	private String serial;
-	private String seed;
+	protected int id;
+	protected String name;
+	protected String serial;
+	protected String seed;
 	
 	public Token(String name, String serial, String seed) {
 		super();
@@ -61,14 +62,5 @@ abstract public class Token implements Serializable {
 	}
 
 	abstract public String getOtp();
-	
-	private byte[] hmacSha1(byte[] key, byte[] counter){
-		try {
-			Mac mac = Mac.getInstance("HmacSHA1");
-			mac.init(new SecretKeySpec(key, "HmacSHA1"));
-			return mac.doFinal(counter);
-		} catch (GeneralSecurityException e){
-			throw new UndeclaredThrowableException(e);
-		}
-	}
+
 }

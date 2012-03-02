@@ -19,12 +19,12 @@ public class Utils {
 		//implementation like in the RFC example
 		byte[] converted = new BigInteger("10" + input,16).toByteArray();
 		byte[] result = new byte[converted.length - 1];
-		for (int i = 1; i < result.length; i++)
+		for (int i = 1; i <= result.length; i++)
 			result[i-1] = converted[i];
 		return result;
 	}
 	
-	public byte[] hmacSha1(byte[] key, byte[] counter){
+	public static byte[] hmacSha1(byte[] key, byte[] counter){
 		try {
 			Mac mac = Mac.getInstance("HmacSHA1");
 			mac.init(new SecretKeySpec(key, "HmacSHA1"));

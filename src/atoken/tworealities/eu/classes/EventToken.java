@@ -29,14 +29,18 @@ public class EventToken extends Token {
 
 	@Override
 	public String getOtp() {
-		/*byte[] bcounter = new byte[8];
+		/**
+		 * @TODO CLEAN UP THIS SHIT
+		 */
+		byte[] bcounter = new byte[8];
+		long movingFactor = (long) counter;
 		
 		for (int i = bcounter.length - 1; i >= 0; i--) {
-			bcounter[i] = (byte) (counter & 0xff);
-			counter >>= 8;
+			bcounter[i] = (byte) (movingFactor & 0xff);
+			movingFactor >>= 8;
 		}
 		
-		byte[] hash = hmacSha1(hexStr2Bytes(seed), bcounter);
+		byte[] hash = Utils.hmacSha1(Utils.stringToHex(seed), bcounter);
 		int offset = hash[hash.length - 1] & 0xf;
 		
 		int otpBinary = ((hash[offset] & 0x7f) << 24)
@@ -51,10 +55,9 @@ public class EventToken extends Token {
 		while(result.length() < 6){
 			result = "0" + result;
 		}
-		
-		
-		return result;*/
-		return "000000";
+
+		counter++;
+		return result;
 	}
 
 	public EventToken(Cursor c) {

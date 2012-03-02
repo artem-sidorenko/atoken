@@ -1,6 +1,5 @@
 package atoken.tworealities.eu;
 
-import android.R.bool;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import atoken.tworealities.eu.classes.Utils;
 
 public class New_token extends Activity {
 	private Token token;
+	private final int SEED_LENGTH=40;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +82,11 @@ public class New_token extends Activity {
 
 			if (token==null){//new token
 				//checks
-				if(seed.length()<32){
+				if(seed.length()<SEED_LENGTH){
 					Toast.makeText(v.getContext(),getString(R.string.new_token_toast_short_seed), Toast.LENGTH_SHORT).show();
 					return;
 				}
-				if(seed.length()>32){
+				if(seed.length()>SEED_LENGTH){
 					Toast.makeText(v.getContext(),getString(R.string.new_token_toast_long_seed), Toast.LENGTH_SHORT).show();
 					return;
 				}

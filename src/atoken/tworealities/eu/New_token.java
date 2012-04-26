@@ -104,7 +104,7 @@ public class New_token extends Activity {
 			{
 				token.setName(name);
 				token.setSerial(serial);
-				token.setSeed(seed);				
+				//token.setSeed(seed);				
 			}
 			
 

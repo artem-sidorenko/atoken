@@ -1,21 +1,10 @@
 package atoken.tworealities.eu.classes;
 
 import java.io.Serializable;
-import java.lang.reflect.UndeclaredThrowableException;
-import java.math.BigInteger;
-import java.security.GeneralSecurityException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 
 import android.database.Cursor;
 
 abstract public class Token implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8625397089956144788L;
 	protected int id;
 	protected String name;

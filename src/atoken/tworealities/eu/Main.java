@@ -240,6 +240,11 @@ public class Main extends ListActivity {
 			
 			otp.setText(token.getOtp());
 			
+			//temp
+			DBAdapter db = new DBAdapter(parent.getContext());
+			db.updateToken(token);
+			db.close();
+			
 			return token_item;
 		}
 		

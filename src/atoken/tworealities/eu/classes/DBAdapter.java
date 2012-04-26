@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DBAdapter extends SQLiteOpenHelper{
+	private static final String TAG = DBAdapter.class.getSimpleName();
 	/**some constants for main table*/
 	public static final String MAIN_TABLE = "main";
 	public static final String KEY_MAIN_ID = "_id";
@@ -83,6 +84,7 @@ public class DBAdapter extends SQLiteOpenHelper{
 		main_values.put(KEY_MAIN_NAME, token.getName());
 		main_values.put(KEY_MAIN_SERIAL, token.getSerial());
 		main_values.put(KEY_MAIN_SEED, token.getSeed());
+		Log.d(TAG,"values: "+main_values.toString());
 		db.update(MAIN_TABLE, main_values, KEY_MAIN_ID+"="+token_id, null);
 
 		
@@ -91,13 +93,15 @@ public class DBAdapter extends SQLiteOpenHelper{
 			ContentValues time_values = new ContentValues();
 			time_values.put(KEY_TIME_ID,token_id);
 			time_values.put(KEY_TIME_TYPE,time_token.getType());
+			Log.d(TAG,"values: "+time_values.toString());
 			db.update(TIME_TABLE, time_values, KEY_TIME_ID+"="+token_id, null);
 		}
 		
 		else if(token instanceof EventToken){
 			ContentValues event_values = new ContentValues();
 			event_values.put(KEY_EVENT_ID,token_id);
-			event_values.put(KEY_EVENT_COUNTER,0);
+			event_values.put(KEY_EVENT_COUNTER,((EventToken) token).getCounter());
+			Log.d(TAG,"values: "+event_values.toString());
 			db.update(EVENT_TABLE, event_values, KEY_EVENT_ID+"="+token_id, null);
 		}
 	}

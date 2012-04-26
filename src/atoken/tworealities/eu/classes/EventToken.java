@@ -1,12 +1,10 @@
 package atoken.tworealities.eu.classes;
 
 import android.database.Cursor;
-import android.widget.SeekBar;
+import android.util.Log;
 
 public class EventToken extends Token {
-	/**
-	 * 
-	 */
+	private static final String TAG = EventToken.class.getSimpleName();
 	private static final long serialVersionUID = -6380321267677699791L;
 	private int counter;
 	
@@ -56,6 +54,7 @@ public class EventToken extends Token {
 			result = "0" + result;
 		}
 
+		Log.d(TAG, "Generated event OTP "+result+" with counter "+counter);
 		counter++;
 		return result;
 	}

@@ -45,8 +45,8 @@ public class Main extends ListActivity {
 		public void run() {
 			if(handler_keep_running){
 				Log.d(TAG, "Running thread");
-//				fillTokens();
-//				handler_new_tokens.postDelayed(run_new_tokens, 1000);
+				fillTokens();
+				handler_new_tokens.postDelayed(run_new_tokens, 1000);
 			}
 		}
 	};
@@ -140,6 +140,11 @@ public class Main extends ListActivity {
 		final Token token = token_list.get((int) info.position);
 		
 		switch(item.getItemId()) {
+		case R.id.main_list_context_menu_generate_token:
+			token.getNewOtp();
+			db.updateToken(token);
+			fillTokens();
+			return true;
 		case R.id.main_list_context_menu_edit:
 			Intent i = new Intent(this,New_token.class);
 			i.putExtra("token", token);

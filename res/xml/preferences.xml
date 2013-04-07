@@ -3,10 +3,11 @@
     
     <CheckBoxPreference android:key="use_ntp" android:title="@string/preferences_ntp" android:summary="@string/preferences_summary_ntp" android:enabled="false"/>
     <CheckBoxPreference android:key="use_clipboards" android:title="@string/preferences_clipboard" android:summary="@string/preferences_summary_clipboard" android:enabled="false"/>
-    <PreferenceCategory android:title="@string/preferences_group_backup" android:enabled="false">
+    <ListPreference android:key="show_event_token_time" android:title="@string/preferences_show_event_token_time" android:enabled="false"/><PreferenceCategory android:title="@string/preferences_group_backup" android:enabled="false">
         <Preference android:title="@string/preferences_backup" android:key="backup"/>
         <Preference android:key="restore" android:title="@string/preferences_restore"/>
     </PreferenceCategory>
+    
     
 
 </PreferenceScreen>

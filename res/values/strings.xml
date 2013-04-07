@@ -44,5 +44,6 @@
         <string name="new_token_toast_long_seed">Seed is too long</string>
         <string name="new_token_toast_seed_not_hex">Seed should be hexadecimal</string>
         <string name="main_list_context_menu_generate_token">Generate token</string>
+        <string name="preferences_show_event_token_time">Show event token</string>
 
 </resources>

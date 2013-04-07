@@ -259,7 +259,7 @@ public class Main extends ListActivity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
 			LayoutInflater inflater = getLayoutInflater();
-			 View token_item = inflater.inflate(R.layout.main_token_item, null);
+			View token_item = inflater.inflate(R.layout.main_token_item, null);
 			
 			TextView name = (TextView) token_item.findViewById(R.id.token_item_name);
 			TextView serial = (TextView) token_item.findViewById(R.id.token_item_serial);

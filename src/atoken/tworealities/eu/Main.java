@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,13 +38,15 @@ public class Main extends ListActivity {
 	private DBAdapter db;
 	private Handler handler_new_tokens = new Handler();
 	private boolean handler_keep_running;
+	
+	//do regular updates for TOTP tokens
 	private Runnable run_new_tokens = new Runnable() {
 		
 		public void run() {
 			if(handler_keep_running){
 				Log.d(TAG, "Running thread");
-				fillTokens();
-				handler_new_tokens.postDelayed(run_new_tokens, 1000);
+//				fillTokens();
+//				handler_new_tokens.postDelayed(run_new_tokens, 1000);
 			}
 		}
 	};
@@ -83,6 +86,7 @@ public class Main extends ListActivity {
 		handler_keep_running = false;
 	}
 
+	//create options menu
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu){
 		MenuInflater inflater = getMenuInflater();
@@ -90,13 +94,28 @@ public class Main extends ListActivity {
 		return true;
 	}
 
+	//create context menu
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_list_context_menu, menu);
-	}
+		
+		//decide to show generate otp selection or not
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+		final Token token = token_list.get((int) info.position);
+		Log.d(TAG, "Selected the posistion "+info.position);
+		
+		if(token instanceof EventToken)
+			menu.findItem(R.id.main_list_context_menu_generate_token).setVisible(true);
+		else
+			menu.findItem(R.id.main_list_context_menu_generate_token).setVisible(false);
 
+	}
+	
+	
+
+	//some item in options menu is selected
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
@@ -114,6 +133,7 @@ public class Main extends ListActivity {
 		}
 	}
 	
+	//something selected in context menu
 	@Override
 	public boolean onContextItemSelected(final MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
@@ -143,6 +163,7 @@ public class Main extends ListActivity {
 		}
 	}
 
+	//exit status from activity call
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
@@ -179,6 +200,8 @@ public class Main extends ListActivity {
 		setListAdapter(list_adapter);
 	}
 	
+	
+	//our list with tokens
 	private class ListAdapter extends BaseAdapter{
 		
 		
@@ -231,6 +254,7 @@ public class Main extends ListActivity {
 			
 			name.setText(token.getName());
 			serial.setText(token.getSerial());
+			// TODO progress only for TimeTokens?
 			time.setProgress(50);
 			
 			if(token instanceof EventToken){
@@ -240,7 +264,7 @@ public class Main extends ListActivity {
 			
 			otp.setText(token.getOtp());
 			
-			//temp
+			// TODO we should use the main db?
 			DBAdapter db = new DBAdapter(parent.getContext());
 			db.updateToken(token);
 			db.close();

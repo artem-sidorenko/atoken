@@ -10,8 +10,9 @@ public class TimeToken extends Token {
 	private int type;
 
 	@Override
-	public String getOtp() {
+	public String getNewOtp() {
 		// TODO Auto-generated method stub
+		this.otp = "000000";
 		return "000000";
 	}
 

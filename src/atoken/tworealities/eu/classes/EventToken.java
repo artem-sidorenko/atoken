@@ -26,7 +26,7 @@ public class EventToken extends Token {
 	}
 
 	@Override
-	public String getOtp() {
+	public String getNewOtp() {
 		/**
 		 * @TODO CLEAN UP THIS SHIT
 		 */
@@ -56,6 +56,7 @@ public class EventToken extends Token {
 
 		Log.d(TAG, "Generated event OTP "+result+" with counter "+counter);
 		counter++;
+		this.otp = result;
 		return result;
 	}
 

@@ -10,6 +10,7 @@ abstract public class Token implements Serializable {
 	protected String name;
 	protected String serial;
 	protected String seed;
+	protected String otp;
 	
 	public Token(String name, String serial, String seed) {
 		super();
@@ -49,7 +50,11 @@ abstract public class Token implements Serializable {
 	public int getId() {
 		return id;
 	}
+	
+	public String getOtp() {
+		return otp;
+	}
 
-	abstract public String getOtp();
+	abstract public String getNewOtp();
 
 }

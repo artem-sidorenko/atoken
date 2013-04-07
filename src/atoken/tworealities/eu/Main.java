@@ -168,6 +168,20 @@ public class Main extends ListActivity {
 		}
 	}
 
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		// TODO Auto-generated method stub
+		super.onListItemClick(l, v, position, id);
+		final Token token = token_list.get((int) position);
+		if(token instanceof EventToken){
+			token.getNewOtp();
+			db.updateToken(token);
+			fillTokens();
+		}
+	}
+
+
+
 	//exit status from activity call
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -208,9 +222,6 @@ public class Main extends ListActivity {
 	
 	//our list with tokens
 	private class ListAdapter extends BaseAdapter{
-		
-		
-		
 		public ListAdapter(Context context) {
 			super();
 			token_list = new ArrayList<Token>();
@@ -248,7 +259,7 @@ public class Main extends ListActivity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
 			LayoutInflater inflater = getLayoutInflater();
-			View token_item = inflater.inflate(R.layout.main_token_item, null);
+			 View token_item = inflater.inflate(R.layout.main_token_item, null);
 			
 			TextView name = (TextView) token_item.findViewById(R.id.token_item_name);
 			TextView serial = (TextView) token_item.findViewById(R.id.token_item_serial);
